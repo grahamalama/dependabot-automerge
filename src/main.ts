@@ -45,6 +45,20 @@ async function run(): Promise<void> {
       )
       const label = core.getInput('label')
       const octokit = github.getOctokit(core.getInput('github-token'))
+      core.debug(
+        `Parsed input:\n${JSON.stringify(
+          {
+            semverLevel,
+            dependencyType,
+            mergeStrategy,
+            prodDepSemverAutoapprove,
+            devDepSemverAutoapprove,
+            label
+          },
+          null,
+          2
+        )}`
+      )
 
       // get PR context
       // TODO: Don't cast
@@ -56,6 +70,7 @@ async function run(): Promise<void> {
         repo,
         pull_number: prNumber
       })
+      core.debug(`Pull request data:\n${JSON.stringify(pullRequest, null, 2)}`)
 
       // Check if the PR was created by Dependabot
       const isDependabotPR = pullRequest.user?.login === 'dependabot[bot]'
@@ -82,22 +97,26 @@ async function run(): Promise<void> {
         pullRequestId: pullRequest.node_id,
         mergeMethod: mergeStrategy.toUpperCase()
       })
-
+      core.debug(
+        `isDependabotPR: ${isDependabotPR}\nshouldAutoMerge: ${shouldAutoMerge}`
+      )
       if (isDependabotPR && shouldAutoMerge) {
-        await octokit.rest.pulls.createReview({
+        const response = await octokit.rest.pulls.createReview({
           owner,
           repo,
           pull_number: prNumber,
           event: 'APPROVE'
         })
+        core.debug(`review response: ${JSON.stringify(response, null, 2)}`)
       } else if (label) {
         // TODO ensure label exists in repository before creating it
-        await octokit.rest.issues.addLabels({
+        const response = octokit.rest.issues.addLabels({
           owner,
           repo,
           issue_number: prNumber,
           labels: [label]
         })
+        core.debug(`apply label response: ${JSON.stringify(response, null, 2)}`)
       }
     }
   } catch (error) {

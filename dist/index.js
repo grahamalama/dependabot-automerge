@@ -75,6 +75,14 @@ function run() {
                 const devDepSemverAutoapprove = parseAutoApprovals(core.getInput('dev-dep-semver-autoapprove'));
                 const label = core.getInput('label');
                 const octokit = github.getOctokit(core.getInput('github-token'));
+                core.debug(`Parsed input:\n${JSON.stringify({
+                    semverLevel,
+                    dependencyType,
+                    mergeStrategy,
+                    prodDepSemverAutoapprove,
+                    devDepSemverAutoapprove,
+                    label
+                }, null, 2)}`);
                 // get PR context
                 // TODO: Don't cast
                 const prNumber = (_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number;
@@ -84,6 +92,7 @@ function run() {
                     repo,
                     pull_number: prNumber
                 });
+                core.debug(`Pull request data:\n${JSON.stringify(pullRequest, null, 2)}`);
                 // Check if the PR was created by Dependabot
                 const isDependabotPR = ((_b = pullRequest.user) === null || _b === void 0 ? void 0 : _b.login) === 'dependabot[bot]';
                 const shouldAutoMerge = (() => {
@@ -108,22 +117,25 @@ function run() {
                     pullRequestId: pullRequest.node_id,
                     mergeMethod: mergeStrategy.toUpperCase()
                 });
+                core.debug(`isDependabotPR: ${isDependabotPR}\nshouldAutoMerge: ${shouldAutoMerge}`);
                 if (isDependabotPR && shouldAutoMerge) {
-                    yield octokit.rest.pulls.createReview({
+                    const response = yield octokit.rest.pulls.createReview({
                         owner,
                         repo,
                         pull_number: prNumber,
                         event: 'APPROVE'
                     });
+                    core.debug(`review response: ${JSON.stringify(response, null, 2)}`);
                 }
                 else if (label) {
                     // TODO ensure label exists in repository before creating it
-                    yield octokit.rest.issues.addLabels({
+                    const response = octokit.rest.issues.addLabels({
                         owner,
                         repo,
                         issue_number: prNumber,
                         labels: [label]
                     });
+                    core.debug(`apply label response: ${JSON.stringify(response, null, 2)}`);
                 }
             }
         }
