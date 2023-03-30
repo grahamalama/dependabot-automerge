@@ -79,7 +79,7 @@ async function run(): Promise<void> {
         }
       `
       await octokit.graphql(enableAutoMergeQuery, {
-        pullRequestId: pullRequest.id,
+        pullRequestId: pullRequest.node_id,
         mergeMethod: mergeStrategy.toUpperCase()
       })
 

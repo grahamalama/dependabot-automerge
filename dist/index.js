@@ -105,7 +105,7 @@ function run() {
         }
       `;
                 yield octokit.graphql(enableAutoMergeQuery, {
-                    pullRequestId: pullRequest.id,
+                    pullRequestId: pullRequest.node_id,
                     mergeMethod: mergeStrategy.toUpperCase()
                 });
                 if (isDependabotPR && shouldAutoMerge) {
