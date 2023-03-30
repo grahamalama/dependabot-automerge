@@ -1,0 +1,20 @@
+name: 'build-test'
+on: # rebuild any PRs and main branch changes
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+
+jobs:
+  build: # make sure build/ci work properly
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.15.0
+      - run: |
+          NODE_OPTIONS=--openssl-legacy-provider npm install
+      - run: |
+          NODE_OPTIONS=--openssl-legacy-provider npm run all

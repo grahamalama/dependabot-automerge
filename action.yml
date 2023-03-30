@@ -1,0 +1,30 @@
+name: 'Dependabot Automerge'
+description: 'Automatically approve and merge Dependabot PRs'
+inputs:
+  semver-level:
+    description: Semver update type as provided by output of dependabot/fetch-metadata
+    required: true
+  dependency-type:
+    description: Type of dependency as provided by output of dependabot/fetch-metadata
+    required: true
+  merge-strategy:
+    description: Merge strategy to use when enabling automerge
+    required: true
+    default: "merge"
+  prod-dep-semver-autoapprove:
+    description: 'Semver levels for which to automatically approve the PR for production dependencies'
+    required: true
+    default: "minor,patch"
+  dev-dep-semver-autoapprove:
+    description: 'Semver levels for which to automatically approve the PR for development dependencies'
+    required: true
+    default: "major,minor,patch"
+  label:
+    description: "Label to apply to PR if it isn't approved."
+    required: false
+  github-token:
+    description: Github token
+    required: true
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
