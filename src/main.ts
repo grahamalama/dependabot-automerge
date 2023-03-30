@@ -44,7 +44,7 @@ async function run(): Promise<void> {
         core.getInput('prod-dev-semver-autoapprove')
       )
       const label = core.getInput('label')
-      const octokit = github.getOctokit(core.getInput('get-token'))
+      const octokit = github.getOctokit(core.getInput('github-token'))
 
       // get PR context
       // TODO: Don't cast
