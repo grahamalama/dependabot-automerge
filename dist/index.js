@@ -97,12 +97,16 @@ function run() {
                     }
                 })();
                 // Enable automatic merge on the PR using the specified merge strategy
-                yield octokit.rest.pulls.merge({
-                    owner,
-                    repo,
-                    pull_number: prNumber,
-                    merge_method: mergeStrategy,
-                    auto_merge: true
+                const enableAutoMergeQuery = `
+        mutation($pullRequestId: ID!) {
+          enablePullRequestAutoMerge(input: { pullRequestId: $pullRequestId, mergeMethod: $mergeMethod }) {
+            clientMutationId
+          }
+        }
+      `;
+                yield octokit.graphql(enableAutoMergeQuery, {
+                    pullRequestId: pullRequest.id,
+                    mergeMethod: mergeStrategy
                 });
                 if (isDependabotPR && shouldAutoMerge) {
                     yield octokit.rest.pulls.createReview({
