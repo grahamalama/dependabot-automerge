@@ -22,6 +22,9 @@ inputs:
   label:
     description: "Label to apply to PR if it isn't approved."
     required: false
+  github-token:
+    description: 'The GITHUB_TOKEN secret'
+    default: ${{ github.token }}
 runs:
   using: 'node16'
   main: 'dist/index.js'
