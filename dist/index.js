@@ -74,7 +74,7 @@ function run() {
                 const prodDepSemverAutoapprove = parseAutoApprovals(core.getInput('prod-dep-semver-autoapprove'));
                 const devDepSemverAutoapprove = parseAutoApprovals(core.getInput('prod-dev-semver-autoapprove'));
                 const label = core.getInput('label');
-                const octokit = github.getOctokit(core.getInput('get-token'));
+                const octokit = github.getOctokit(core.getInput('github-token'));
                 // get PR context
                 // TODO: Don't cast
                 const prNumber = (_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number;

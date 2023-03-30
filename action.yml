@@ -22,9 +22,6 @@ inputs:
   label:
     description: "Label to apply to PR if it isn't approved."
     required: false
-  github-token:
-    description: Github token
-    required: true
 runs:
   using: 'node16'
   main: 'dist/index.js'
