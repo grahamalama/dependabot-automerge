@@ -72,7 +72,7 @@ function run() {
                 const dependencyType = parseDependencyType(core.getInput('dependency-type'));
                 const mergeStrategy = parseMergeStrategy(core.getInput('merge-strategy'));
                 const prodDepSemverAutoapprove = parseAutoApprovals(core.getInput('prod-dep-semver-autoapprove'));
-                const devDepSemverAutoapprove = parseAutoApprovals(core.getInput('prod-dev-semver-autoapprove'));
+                const devDepSemverAutoapprove = parseAutoApprovals(core.getInput('dev-dep-semver-autoapprove'));
                 const label = core.getInput('label');
                 const octokit = github.getOctokit(core.getInput('github-token'));
                 // get PR context
