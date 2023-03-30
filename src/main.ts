@@ -72,7 +72,7 @@ async function run(): Promise<void> {
 
       // Enable automatic merge on the PR using the specified merge strategy
       const enableAutoMergeQuery = `
-        mutation($pullRequestId: ID!) {
+        mutation($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod) {
           enablePullRequestAutoMerge(input: { pullRequestId: $pullRequestId, mergeMethod: $mergeMethod }) {
             clientMutationId
           }
@@ -80,7 +80,7 @@ async function run(): Promise<void> {
       `
       await octokit.graphql(enableAutoMergeQuery, {
         pullRequestId: pullRequest.id,
-        mergeMethod: mergeStrategy
+        mergeMethod: mergeStrategy.toUpperCase()
       })
 
       if (isDependabotPR && shouldAutoMerge) {
