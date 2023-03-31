@@ -28,3 +28,4 @@ jobs:
           merge-strategy: "squash"
           prod-dep-semver-autoapprove: "patch"
           semver-level: ${{ steps.dependabot-metadata.outputs.update-type }}
+          label: "qa-needed"
