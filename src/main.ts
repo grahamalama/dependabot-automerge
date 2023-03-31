@@ -4,7 +4,7 @@ import * as github from '@actions/github'
 function parseSemverLevel(input: string): string {
   const semver = input.split('version-update:semver-').pop()
   if (!semver) {
-    throw new Error(`Invalid semver-level input: ${semver}"`)
+    throw new Error(`Invalid semver-level input: ${semver}`)
   }
   return semver
 }
@@ -12,7 +12,7 @@ function parseSemverLevel(input: string): string {
 function parseDependencyType(input: string): string {
   const dependencyType = input.split('direct:').pop()
   if (!dependencyType) {
-    throw new Error(`Invalid dependency-type input: ${dependencyType}"`)
+    throw new Error(`Invalid dependency-type input: ${dependencyType}`)
   }
   return dependencyType
 }
@@ -23,7 +23,7 @@ function parseAutoApprovals(input: string): string[] {
 type MergeStrategy = 'merge' | 'squash' | 'rebase'
 export function parseMergeStrategy(input: string): MergeStrategy {
   if (!['merge', 'squash', 'rebase'].includes(input)) {
-    throw new Error(`Invalid merge-strategy input: ${input}"`)
+    throw new Error(`Invalid merge-strategy input: ${input}`)
   }
   // TODO remove cast
   return input as MergeStrategy
