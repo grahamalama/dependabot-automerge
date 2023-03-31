@@ -110,7 +110,7 @@ async function run(): Promise<void> {
         core.debug(`review response: ${JSON.stringify(response, null, 2)}`)
       } else if (label) {
         // TODO ensure label exists in repository before creating it
-        const response = octokit.rest.issues.addLabels({
+        const response = await octokit.rest.issues.addLabels({
           owner,
           repo,
           issue_number: prNumber,
