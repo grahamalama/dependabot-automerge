@@ -45,14 +45,14 @@ const github = __importStar(__nccwpck_require__(5438));
 function parseSemverLevel(input) {
     const semver = input.split('version-update:semver-').pop();
     if (!semver) {
-        throw new Error(`Invalid semver-level input: ${semver}"`);
+        throw new Error(`Invalid semver-level input: ${semver}`);
     }
     return semver;
 }
 function parseDependencyType(input) {
     const dependencyType = input.split('direct:').pop();
     if (!dependencyType) {
-        throw new Error(`Invalid dependency-type input: ${dependencyType}"`);
+        throw new Error(`Invalid dependency-type input: ${dependencyType}`);
     }
     return dependencyType;
 }
@@ -61,7 +61,7 @@ function parseAutoApprovals(input) {
 }
 function parseMergeStrategy(input) {
     if (!['merge', 'squash', 'rebase'].includes(input)) {
-        throw new Error(`Invalid merge-strategy input: ${input}"`);
+        throw new Error(`Invalid merge-strategy input: ${input}`);
     }
     // TODO remove cast
     return input;
@@ -133,7 +133,7 @@ function run() {
                 }
                 else if (label) {
                     // TODO ensure label exists in repository before creating it
-                    const response = octokit.rest.issues.addLabels({
+                    const response = yield octokit.rest.issues.addLabels({
                         owner,
                         repo,
                         issue_number: prNumber,
